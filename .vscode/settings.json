@@ -4,7 +4,8 @@
   "files.exclude": {
     "**/dist": true,
     "**/node_modules": true,
-    ".turbo": true
+    "**/coverage": true,
+    "**/.turbo": true
   }
 }
 
