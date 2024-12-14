@@ -1,9 +1,11 @@
 {
-  "name": "time-tools",
+  "name": "@repo/time-tools",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "check-types": "tsc --noEmit",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",

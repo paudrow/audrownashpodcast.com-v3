@@ -1,9 +1,13 @@
 {
   "name": "audrownashpodcast.com-v3",
   "version": "1.0.0",
+  "packageManager": "npm@10.9.2",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "turbo run build",
+    "check-types": "turbo run check-types",
+    "dev": "turbo run dev",
+    "test": "turbo run test"
   },
   "workspaces": [
     "apps/*",
