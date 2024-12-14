@@ -2,7 +2,10 @@
   "name": "@repo/typescript-config",
   "version": "1.0.0",
   "main": "index.js",
-  "files": ["base.json", "nextjs.json"],
+  "files": [
+    "base.json",
+    "nextjs.json"
+  ],
   "devDependencies": {
     "typescript": "^5.3.0"
   }
