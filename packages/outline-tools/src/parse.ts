@@ -10,15 +10,27 @@ export function parse(text: string): Outline {
     throw new Error("Invalid outline: no data");
   }
 
-  const rows = lines.map((line) => {
+  const rows = lines.map((line, lineNumber) => {
     // Split on first space to separate time from text
     const firstSpaceIndex = line.indexOf(" ");
     if (firstSpaceIndex === -1) {
-      throw new Error(`Invalid outline line: ${line}`);
+      if (line.trim() === "") {
+        line = "<empty line>";
+      }
+      throw new Error(
+        `Invalid outline line at line ${lineNumber + 1}: ${line}`
+      );
     }
 
     const timeStr = line.slice(0, firstSpaceIndex);
-    const text = line.slice(firstSpaceIndex + 1);
+    const text = line.slice(firstSpaceIndex + 1).trim();
+
+    // Add check for empty text
+    if (!text) {
+      throw new Error(
+        `Missing text after time at line ${lineNumber + 1}: ${line}`
+      );
+    }
 
     return {
       time: parseTime(timeStr),

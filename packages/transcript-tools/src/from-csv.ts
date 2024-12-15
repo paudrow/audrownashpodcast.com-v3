@@ -19,11 +19,14 @@ export function fromCsv(csv: string, reduceRows: boolean = true): Transcript {
   const dataLines = lines.slice(1);
 
   const rows: TranscriptRow[] = dataLines
-    .map((line) => {
+    .map((line, index) => {
       // Match CSV fields, handling quoted strings properly
       const matches = line.match(/"([^"]*)"/g);
       if (!matches || matches.length !== 4) {
-        throw new Error(`Invalid CSV line: ${line}`);
+        if (line.trim() === "") {
+          line = "<empty line>";
+        }
+        throw new Error(`Invalid CSV line ${index + 2}: ${line}`);
       }
 
       // Remove quotes and get individual fields
@@ -31,21 +34,29 @@ export function fromCsv(csv: string, reduceRows: boolean = true): Transcript {
         (m) => m.slice(1, -1) // Remove surrounding quotes
       );
 
-      if (
-        speaker === undefined ||
-        startTime === undefined ||
-        endTime === undefined ||
-        text === undefined
-      ) {
-        throw new Error(`Invalid CSV line: ${line}`);
+      if (!speaker || speaker === "") {
+        throw new Error(`Missing speaker at line ${index + 2}: ${line}`);
+      }
+      if (!startTime || startTime === "") {
+        throw new Error(`Missing start time at line ${index + 2}: ${line}`);
+      }
+      if (!endTime || endTime === "") {
+        throw new Error(`Missing end time at line ${index + 2}: ${line}`);
       }
 
-      return {
-        speaker,
-        startTime: smpteToTime(startTime),
-        endTime: smpteToTime(endTime),
-        text,
-      };
+      try {
+        return {
+          speaker,
+          startTime: smpteToTime(startTime),
+          endTime: smpteToTime(endTime),
+          text: text || "", // some lines are empty unfortunatly, so we don't want to throw an error
+        };
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          throw new Error(`Error on line ${index + 2}: ${error.message}`);
+        }
+        throw new Error(`Error on line ${index + 2}: Unknown error occurred`);
+      }
     })
     .filter((row) => row.text.trim() !== "");
 

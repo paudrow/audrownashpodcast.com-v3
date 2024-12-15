@@ -82,8 +82,13 @@ describe("parseOutline", () => {
     expect(() => parse(input)).toThrow();
   });
 
-  it("should throw an error if the outline is missing a text", () => {
+  it("should throw an error if the outline is missing text", () => {
     const input = "00:00";
+    expect(() => parse(input)).toThrow();
+  });
+
+  it("should throw an error if the outline is missing text with a space after the time", () => {
+    const input = "00:00  \n 01:04 Hi";
     expect(() => parse(input)).toThrow();
   });
 
