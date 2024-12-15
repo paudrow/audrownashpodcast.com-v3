@@ -1,14 +1,16 @@
-import { parse } from "csv-transcript-tools/parse";
+import { toString } from "@repo/time-tools/to-string";
+import { fromString } from "@repo/time-tools/create";
 import Image from "next/image";
 
 export default function Home() {
   // Example usage of parse function
-  const date = parse("2024-01-01");
+  const time = fromString("1:01:12");
+  const timeString = toString(time);
 
   return (
     <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
       <main className="row-start-2 flex flex-col items-center gap-8 sm:items-start">
-        <div>Parsed Date: {date.toISOString()}</div>
+        <div>Parsed Date: {timeString}</div>
         <Image
           className="dark:invert"
           src="/next.svg"

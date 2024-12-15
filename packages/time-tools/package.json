@@ -7,9 +7,21 @@
     "test": "jest"
   },
   "exports": {
-    "./time": {
-      "types": "./dist/time.d.ts",
-      "default": "./dist/time.js"
+    "./create": {
+      "types": "./src/create.ts",
+      "default": "./dist/create.js"
+    },
+    "./types": {
+      "types": "./src/types.ts",
+      "default": "./dist/types.js"
+    },
+    "./to-string": {
+      "types": "./src/to-string.ts",
+      "default": "./dist/to-string.js"
+    },
+    "./compare": {
+      "types": "./src/compare.ts",
+      "default": "./dist/compare.js"
     }
   },
   "devDependencies": {

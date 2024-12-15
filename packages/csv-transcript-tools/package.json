@@ -8,8 +8,12 @@
   },
   "exports": {
     "./parse": {
-      "types": "./dist/parse.d.ts",
+      "types": "./src/parse.ts",
       "default": "./dist/parse.js"
+    },
+    "./types": {
+      "types": "./src/types.ts",
+      "default": "./dist/types.js"
     }
   },
   "dependencies": {
