@@ -2,18 +2,27 @@ import { Time } from "./types.js";
 
 export function fromString(time: string, delimiter: string = ":"): Time {
   const components = time.split(delimiter).map(Number);
-  if (components.length !== 3) {
+  if (components.length !== 2 && components.length !== 3) {
     throw new Error(
-      `Time must be in format "${delimiter}HH${delimiter}MM${delimiter}SS": ${time}`
+      `Time must be in format "MM${delimiter}SS" or "HH${delimiter}MM${delimiter}SS": ${time}`
     );
   }
-  const [hours, minutes, seconds] = components;
-  if (hours === undefined || minutes === undefined || seconds === undefined) {
-    throw new Error(
-      `Time must be in format "${delimiter}HH${delimiter}MM${delimiter}SS": ${time}`
-    );
+
+  if (components.length === 2) {
+    const [minutes, seconds] = components;
+    if (minutes === undefined || seconds === undefined) {
+      throw new Error(`Time must be in format "MM${delimiter}SS": ${time}`);
+    }
+    return create(0, minutes, seconds);
+  } else {
+    const [hours, minutes, seconds] = components;
+    if (hours === undefined || minutes === undefined || seconds === undefined) {
+      throw new Error(
+        `Time must be in format "HH${delimiter}MM${delimiter}SS": ${time}`
+      );
+    }
+    return create(hours, minutes, seconds);
   }
-  return create(hours, minutes, seconds);
 }
 
 export function create(hours: number, minutes: number, seconds: number): Time {

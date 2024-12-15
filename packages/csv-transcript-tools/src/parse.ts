@@ -1,15 +1,15 @@
-import { CsvTranscript } from "./types.js";
-import { fromString as parseTime } from "@repo/time-tools/create";
+import { Time } from "@repo/time-tools/types";
+import { CsvTranscript, CsvRow } from "./types.js";
+import {
+  fromString as parseTime,
+  create as createTime,
+} from "@repo/time-tools/create";
 
-export function parse(csv: string): CsvTranscript {
-  if (!csv) {
-    return { rows: [] };
-  }
-
+export function parse(csv: string, reduceRows: boolean = true): CsvTranscript {
   // Split into lines and remove header
   const lines = csv.split("\n");
   if (lines.length <= 1) {
-    return { rows: [] };
+    throw new Error("Invalid CSV: no data");
   }
 
   const dataLines = lines.slice(1);
@@ -18,7 +18,7 @@ export function parse(csv: string): CsvTranscript {
     // Match CSV fields, handling quoted strings properly
     const matches = line.match(/"([^"]*)"/g);
     if (!matches || matches.length !== 4) {
-      return null;
+      throw new Error(`Invalid CSV line: ${line}`);
     }
 
     // Remove quotes and get individual fields
@@ -27,22 +27,44 @@ export function parse(csv: string): CsvTranscript {
     );
 
     if (!speaker || !startTime || !endTime || !text) {
-      return null;
+      throw new Error(`Invalid CSV line: ${line}`);
     }
 
-    try {
-      return {
-        speaker,
-        startTime: parseTime(startTime, ";"),
-        endTime: parseTime(endTime, ";"),
-        text,
-      };
-    } catch (error) {
-      return null;
-    }
+    return {
+      speaker,
+      startTime: smpteToTime(startTime),
+      endTime: smpteToTime(endTime),
+      text,
+    };
   });
 
   return {
-    rows: rows.filter((row): row is NonNullable<typeof row> => row !== null),
+    rows: reduceRows ? reduceCsvRowsWithSameSpeaker(rows) : rows,
   };
+}
+
+function reduceCsvRowsWithSameSpeaker(rows: CsvRow[]): CsvRow[] {
+  return rows.reduce((acc, row) => {
+    const lastRow = acc[acc.length - 1];
+    if (acc.length > 0 && lastRow?.speaker === row.speaker) {
+      lastRow.text += ` ${row.text}`;
+      lastRow.endTime = row.endTime;
+    } else {
+      acc.push(row);
+    }
+    return acc;
+  }, [] as CsvRow[]);
+}
+
+function smpteToTime(smpte: string): Time {
+  const [hours, minutes, seconds, frames] = smpte.split(";").map(Number);
+  if (
+    hours === undefined ||
+    minutes === undefined ||
+    seconds === undefined ||
+    frames === undefined
+  ) {
+    throw new Error(`Invalid SMPTE time: ${smpte}`);
+  }
+  return createTime(hours, minutes, seconds);
 }
