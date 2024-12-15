@@ -35,7 +35,7 @@ export default function Home() {
   const [transcriptError, setTranscriptError] = useState<string>("");
   const [outlineError, setOutlineError] = useState<string>("");
 
-  const handleFileUpload = async (
+  const handleTranscriptFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
@@ -51,6 +51,29 @@ export default function Home() {
       event.target.value = "";
     } catch (error) {
       setTranscriptError(
+        error instanceof Error ? error.message : "Invalid file format"
+      );
+      // Also reset the file input on error
+      event.target.value = "";
+    }
+  };
+
+  const handleOutlineFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      setOutlineText(text);
+      // Validate the uploaded outline
+      parseOutline(text);
+      setOutlineError("");
+      // Reset the file input value
+      event.target.value = "";
+    } catch (error) {
+      setOutlineError(
         error instanceof Error ? error.message : "Invalid file format"
       );
       // Also reset the file input on error
@@ -132,7 +155,7 @@ export default function Home() {
                 <input
                   type="file"
                   accept=".csv"
-                  onChange={handleFileUpload}
+                  onChange={handleTranscriptFileUpload}
                   className="hidden"
                   id="file-upload"
                 />
@@ -170,15 +193,30 @@ export default function Home() {
               <label htmlFor="outline" className="block font-medium">
                 Outline Text (Optional)
               </label>
-              <button
-                onClick={() => {
-                  setOutlineText(EXAMPLE_OUTLINE);
-                  setOutlineError("");
-                }}
-                className="text-foreground/70 hover:text-foreground text-sm"
-              >
-                Load Example
-              </button>
+              <div className="flex items-center gap-4">
+                <input
+                  type="file"
+                  accept=".txt"
+                  onChange={handleOutlineFileUpload}
+                  className="hidden"
+                  id="outline-file-upload"
+                />
+                <label
+                  htmlFor="outline-file-upload"
+                  className="text-foreground/70 hover:text-foreground cursor-pointer text-sm"
+                >
+                  Upload TXT
+                </label>
+                <button
+                  onClick={() => {
+                    setOutlineText(EXAMPLE_OUTLINE);
+                    setOutlineError("");
+                  }}
+                  className="text-foreground/70 hover:text-foreground text-sm"
+                >
+                  Load Example
+                </button>
+              </div>
             </div>
             {outlineError && (
               <div className="mb-2 text-sm text-red-500">{outlineError}</div>
