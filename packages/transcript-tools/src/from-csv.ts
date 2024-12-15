@@ -79,7 +79,14 @@ function reduceCsvRowsWithSameSpeaker(rows: TranscriptRow[]): TranscriptRow[] {
 }
 
 function smpteToTime(smpte: string): Time {
-  const [hours, minutes, seconds, frames] = smpte.split(";").map(Number);
+  let parts = smpte.split(";").map(Number);
+
+  // If splitting by ; didn't work, try :
+  if (parts.some((part) => isNaN(part))) {
+    parts = smpte.split(":").map(Number);
+  }
+
+  const [hours, minutes, seconds, frames] = parts;
   if (
     hours === undefined ||
     minutes === undefined ||

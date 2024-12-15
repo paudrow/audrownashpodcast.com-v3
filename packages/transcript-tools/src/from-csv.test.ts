@@ -217,6 +217,13 @@ describe("fromCsv", () => {
     });
   });
 
+  it("should handle a colon separated time", () => {
+    const input = CSV_DATA.replace(/;/g, ":");
+    expect(fromCsv(input, true)).toEqual({
+      rows: EXPECTED_ROWS_WITH_REDUCTION,
+    });
+  });
+
   it("should handle empty string", () => {
     expect(() => fromCsv("")).toThrow();
   });
