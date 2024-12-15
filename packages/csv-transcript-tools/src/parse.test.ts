@@ -106,8 +106,8 @@ const EXPECTED_ROWS = [
 describe("parseTranscript", () => {
   it("should return the input string unchanged", () => {
     const input = CSV_DATA;
-    // expect(parse(input)).toEqual({ rows: EXPECTED_ROWS });
-    expect(parse(input)).toEqual({ rows: [] });
+    expect(parse(input)).toEqual({ rows: EXPECTED_ROWS });
+    // expect(parse(input)).toEqual({ rows: [] });
   });
 
   it("should handle empty string", () => {
