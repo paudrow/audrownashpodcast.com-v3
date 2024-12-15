@@ -1,4 +1,15 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CSV Transcript to Markdown Converter
+
+A web application that converts CSV transcripts into formatted Markdown files, with optional outline integration.
+
+## Features
+
+- Convert CSV transcripts to Markdown format
+- Add optional outline/timestamps
+- Live preview and validation
+- Dark mode support
+- Download generated Markdown files
+- Example data for quick testing
 
 ## Getting Started
 
@@ -14,23 +25,44 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## CSV Format
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The input CSV must follow this format:
 
-## Learn More
+```csv
+"Speaker Name","Start Time","End Time","Text"
+"John Doe","00;00;00;03","00;00;02;06","Hello, world!"
+```
 
-To learn more about Next.js, take a look at the following resources:
+- Times must use semicolons (;) as separators
+- All fields must be quoted
+- All columns are required
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Outline Format
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The optional outline format should be:
 
-## Deploy on Vercel
+```
+00:00 Introduction
+01:30 Main Topic
+02:45 Conclusion
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Each line must start with a timestamp (HH:MM or HH:MM:SS)
+- Timestamp must be followed by a space and description
+- Lines are sorted automatically by time
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Development
+
+This project uses:
+
+- [Next.js](https://nextjs.org/) - React framework
+- [TailwindCSS](https://tailwindcss.com/) - Styling
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Turbo](https://turbo.build/) - Monorepo tooling
+
+## License
+
+MIT
