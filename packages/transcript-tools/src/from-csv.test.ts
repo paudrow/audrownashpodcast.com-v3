@@ -1,4 +1,4 @@
-import { parse } from "./parse";
+import { fromCsv } from "./from-csv";
 import { create as createTime } from "@repo/time-tools/create";
 const CSV_DATA = `"Speaker Name","Start Time","End Time","Text"
 "Audrow Nash","00;00;00;03","00;00;02;06","Hi, Jenny. Would you introduce yourself?"
@@ -178,25 +178,27 @@ const EXPECTED_ROWS_WITH_REDUCTION = [
   },
 ];
 
-describe("parseTranscript", () => {
+describe("fromCsv", () => {
   it("should parse the transcript without reducing rows", () => {
     const input = CSV_DATA;
-    expect(parse(input, false)).toEqual({
+    expect(fromCsv(input, false)).toEqual({
       rows: EXPECTED_ROWS_WITHOUT_REDUCTION,
     });
   });
 
   it("should parse the transcript with reducing rows", () => {
     const input = CSV_DATA;
-    expect(parse(input, true)).toEqual({ rows: EXPECTED_ROWS_WITH_REDUCTION });
+    expect(fromCsv(input, true)).toEqual({
+      rows: EXPECTED_ROWS_WITH_REDUCTION,
+    });
   });
 
   it("should handle empty string", () => {
-    expect(() => parse("")).toThrow();
+    expect(() => fromCsv("")).toThrow();
   });
 
   it("should throw an error if the CSV is invalid", () => {
-    expect(() => parse("invalid")).toThrow();
+    expect(() => fromCsv("invalid")).toThrow();
   });
 
   it("should throw an error if the CSV is missing a column", () => {
@@ -206,7 +208,7 @@ describe("parseTranscript", () => {
 "Audrow Nash","00;00;09;19","And. Tell me about Aria."
 "Jenny Read","00;00;12;11","Yeah. Oh, yeah. Is quite a new funding organization in the UK. We were founded by that to Parliament in January 2023, and our mission is to produce transformative societal benefit to science and technology. So we're we're kind of new an experiment basically in a new way of funding for the UK. We're loosely modeled on the RPO and DAF, a model US that is widely perceived as having been very successful."
 "Jenny Read","00;00;38;28","And we haven't really had that kind of program driven, mission focused approach to funding in the UK before. And that's what Aria is trying to do. But to kick off."`;
-    expect(() => parse(noEndTime)).toThrow();
+    expect(() => fromCsv(noEndTime)).toThrow();
   });
 
   it("should throw if a line is empty", () => {
@@ -216,7 +218,7 @@ describe("parseTranscript", () => {
 "Audrow Nash","00;00;09;19","00;00;12;08","And. Tell me about Aria."
 "Jenny Read","00;00;12;11","00;00;38;26","Yeah. Oh, yeah. Is quite a new funding organization in the UK. We were founded by that to Parliament in January 2023, and our mission is to produce transformative societal benefit to science and technology. So we're we're kind of new an experiment basically in a new way of funding for the UK. We're loosely modeled on the RPO and DAF, a model US that is widely perceived as having been very successful."
 "Jenny Read","00;00;38;28","00;00;50;13","And we haven't really had that kind of program driven, mission focused approach to funding in the UK before. And that's what Aria is trying to do. But to kick off."`;
-    expect(() => parse(emptyLine)).toThrow();
+    expect(() => fromCsv(emptyLine)).toThrow();
   });
 
   it("should throw if a start time is an invalid format", () => {
@@ -227,7 +229,7 @@ describe("parseTranscript", () => {
 "Audrow Nash","00;00;09;19","00;00;12;08","And. Tell me about Aria."
 "Jenny Read","00;00;12;11","00;00;38;26","Yeah. Oh, yeah. Is quite a new funding organization in the UK. We were founded by that to Parliament in January 2023, and our mission is to produce transformative societal benefit to science and technology. So we're we're kind of new an experiment basically in a new way of funding for the UK. We're loosely modeled on the RPO and DAF, a model US that is widely perceived as having been very successful."
 "Jenny Read","00;00;38;28","00;00;50;13","And we haven't really had that kind of program driven, mission focused approach to funding in the UK before. And that's what Aria is trying to do. But to kick off."`;
-    expect(() => parse(invalidStartTime)).toThrow();
+    expect(() => fromCsv(invalidStartTime)).toThrow();
   });
 
   it("should throw if an end time is an invalid format", () => {
@@ -238,6 +240,6 @@ describe("parseTranscript", () => {
 "Audrow Nash","00;00;09;19","00;00;12;08","And. Tell me about Aria."
 "Jenny Read","00;00;12;11","00;00;38;26","Yeah. Oh, yeah. Is quite a new funding organization in the UK. We were founded by that to Parliament in January 2023, and our mission is to produce transformative societal benefit to science and technology. So we're we're kind of new an experiment basically in a new way of funding for the UK. We're loosely modeled on the RPO and DAF, a model US that is widely perceived as having been very successful."
 "Jenny Read","00;00;38;28","00;00;50;13","And we haven't really had that kind of program driven, mission focused approach to funding in the UK before. And that's what Aria is trying to do. But to kick off."`;
-    expect(() => parse(invalidEndTime)).toThrow();
+    expect(() => fromCsv(invalidEndTime)).toThrow();
   });
 });

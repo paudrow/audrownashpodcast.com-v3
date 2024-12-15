@@ -1,5 +1,5 @@
 {
-  "name": "@repo/csv-transcript-tools",
+  "name": "@repo/transcript-tools",
   "version": "1.0.0",
   "scripts": {
     "build": "tsc",
@@ -8,9 +8,9 @@
     "test:watch": "jest --watch"
   },
   "exports": {
-    "./parse": {
-      "types": "./src/parse.ts",
-      "default": "./dist/parse.js"
+    "./from-csv": {
+      "types": "./src/from-csv.ts",
+      "default": "./dist/from-csv.js"
     },
     "./types": {
       "types": "./src/types.ts",

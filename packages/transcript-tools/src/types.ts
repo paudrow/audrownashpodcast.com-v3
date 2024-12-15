@@ -1,10 +1,10 @@
 import { Time } from "@repo/time-tools/types";
 
-export interface CsvTranscript {
-  rows: CsvRow[];
+export interface Transcript {
+  rows: TranscriptRow[];
 }
 
-export interface CsvRow {
+export interface TranscriptRow {
   speaker: string;
   startTime: Time;
   endTime: Time;

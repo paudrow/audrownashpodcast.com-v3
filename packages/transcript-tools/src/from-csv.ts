@@ -1,11 +1,8 @@
 import { Time } from "@repo/time-tools/types";
-import { CsvTranscript, CsvRow } from "./types.js";
-import {
-  fromString as parseTime,
-  create as createTime,
-} from "@repo/time-tools/create";
+import { Transcript, TranscriptRow } from "./types.js";
+import { create as createTime } from "@repo/time-tools/create";
 
-export function parse(csv: string, reduceRows: boolean = true): CsvTranscript {
+export function fromCsv(csv: string, reduceRows: boolean = true): Transcript {
   // Split into lines and remove header
   const lines = csv.split("\n");
   if (lines.length <= 1) {
@@ -43,7 +40,7 @@ export function parse(csv: string, reduceRows: boolean = true): CsvTranscript {
   };
 }
 
-function reduceCsvRowsWithSameSpeaker(rows: CsvRow[]): CsvRow[] {
+function reduceCsvRowsWithSameSpeaker(rows: TranscriptRow[]): TranscriptRow[] {
   return rows.reduce((acc, row) => {
     const lastRow = acc[acc.length - 1];
     if (acc.length > 0 && lastRow?.speaker === row.speaker) {
@@ -53,7 +50,7 @@ function reduceCsvRowsWithSameSpeaker(rows: CsvRow[]): CsvRow[] {
       acc.push(row);
     }
     return acc;
-  }, [] as CsvRow[]);
+  }, [] as TranscriptRow[]);
 }
 
 function smpteToTime(smpte: string): Time {
