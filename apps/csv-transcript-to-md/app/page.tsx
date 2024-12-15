@@ -1,6 +1,8 @@
 "use client";
 
 import { makeMarkdownTranscriptFromStrings } from "@repo/markdown-tools/make-transcript";
+import { parse as parseOutline } from "@repo/outline-tools/parse";
+import { fromCsv } from "@repo/transcript-tools/from-csv";
 import { useState } from "react";
 
 const EXAMPLE_TRANSCRIPT = `"Speaker Name","Start Time","End Time","Text"
@@ -30,6 +32,44 @@ export default function Home() {
   const [transcriptText, setTranscriptText] = useState("");
   const [outlineText, setOutlineText] = useState("");
   const [outputText, setOutputText] = useState("");
+  const [transcriptError, setTranscriptError] = useState<string>("");
+  const [outlineError, setOutlineError] = useState<string>("");
+
+  const handleTranscriptChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const value = e.target.value;
+    setTranscriptText(value);
+    if (!value) {
+      setTranscriptError("");
+      return;
+    }
+    try {
+      fromCsv(value);
+      setTranscriptError("");
+    } catch (error) {
+      setTranscriptError(
+        error instanceof Error ? error.message : "Invalid transcript format"
+      );
+    }
+  };
+
+  const handleOutlineChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setOutlineText(value);
+    if (!value) {
+      setOutlineError("");
+      return;
+    }
+    try {
+      parseOutline(value);
+      setOutlineError("");
+    } catch (error) {
+      setOutlineError(
+        error instanceof Error ? error.message : "Invalid outline format"
+      );
+    }
+  };
 
   const handleConvert = () => {
     try {
@@ -58,17 +98,23 @@ export default function Home() {
                 Transcript CSV
               </label>
               <button
-                onClick={() => setTranscriptText(EXAMPLE_TRANSCRIPT)}
+                onClick={() => {
+                  setTranscriptText(EXAMPLE_TRANSCRIPT);
+                  setTranscriptError("");
+                }}
                 className="text-foreground/70 hover:text-foreground text-sm"
               >
                 Load Example
               </button>
             </div>
+            {transcriptError && (
+              <div className="mb-2 text-sm text-red-500">{transcriptError}</div>
+            )}
             <textarea
               id="transcript"
               className="bg-background border-foreground/20 h-64 w-full rounded-lg border p-3 font-mono text-sm"
               value={transcriptText}
-              onChange={(e) => setTranscriptText(e.target.value)}
+              onChange={handleTranscriptChange}
               placeholder='Example: "Speaker Name","Start Time","End Time","Text"'
             />
           </div>
@@ -79,24 +125,31 @@ export default function Home() {
                 Outline Text (Optional)
               </label>
               <button
-                onClick={() => setOutlineText(EXAMPLE_OUTLINE)}
+                onClick={() => {
+                  setOutlineText(EXAMPLE_OUTLINE);
+                  setOutlineError("");
+                }}
                 className="text-foreground/70 hover:text-foreground text-sm"
               >
                 Load Example
               </button>
             </div>
+            {outlineError && (
+              <div className="mb-2 text-sm text-red-500">{outlineError}</div>
+            )}
             <textarea
               id="outline"
               className="bg-background border-foreground/20 h-64 w-full rounded-lg border p-3 font-mono text-sm"
               value={outlineText}
-              onChange={(e) => setOutlineText(e.target.value)}
+              onChange={handleOutlineChange}
               placeholder="Example: 00:00 Introduction"
             />
           </div>
 
           <button
             onClick={handleConvert}
-            className="bg-foreground text-background rounded-lg px-4 py-2 transition-opacity hover:opacity-90"
+            disabled={!!transcriptError || !!outlineError}
+            className="bg-foreground text-background rounded-lg px-4 py-2 transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Convert to Markdown
           </button>
