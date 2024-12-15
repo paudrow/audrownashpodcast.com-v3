@@ -117,7 +117,7 @@ const TRANSCRIPT: Transcript = {
   ],
 };
 
-const EXPECTED_MARKDOWN = `## [00:00:00]Introduction and Background
+const EXPECTED_MARKDOWN_WITH_OUTLINE = `## [00:00:00] Introduction and Background
 
 [00:00:00] **Audrow Nash:** Hi, Jenny. Would you introduce yourself?
 
@@ -154,8 +154,41 @@ const EXPECTED_MARKDOWN = `## [00:00:00]Introduction and Background
 [00:01:57] **Jenny Read:** Yeah I think we we fund work. That's very basic and speculative. But importantly, we always have a sense of how we're hoping it's going to deliver benefit for society. So we wouldn't fund or we haven't typically funded work that sort of blue sky in the sense we have no idea how this might benefit. Well, we have a purpose in mind. And then we're trying to get the knowledge and the technology together that we need to solve the problem we're focusing on. And we have at that moment seven programs, and each program is focusing on a different problem area, will challenge that we're aiming to solve.
 `;
 
+const EXPECTED_MARKDOWN_WITHOUT_OUTLINE = `[00:00:00] **Audrow Nash:** Hi, Jenny. Would you introduce yourself?
+
+[00:00:02] **Jenny Read:** Absolutely. I'm Jenny Read. I'm a program director at Aria, the UK's advanced research and invention agency.
+
+[00:00:09] **Audrow Nash:** And. Tell me about Aria.
+
+[00:00:12] **Jenny Read:** Yeah. Oh, yeah. Is quite a new funding organization in the UK. We were founded by that to Parliament in January 2023, and our mission is to produce transformative societal benefit to science and technology. So we're we're kind of new an experiment basically in a new way of funding for the UK. We're loosely modeled on the RPO and DAF, a model US that is widely perceived as having been very successful. And we haven't really had that kind of program driven, mission focused approach to funding in the UK before. And that's what Aria is trying to do. But to kick off.
+
+[00:00:50] **Audrow Nash:** Now you say loosely focused what what aspects are you taking and what aspects are you leaving from the RPA RPA program.
+
+[00:00:57] **Jenny Read:** Yeah. Well one important thing that we're leaving from DARPA is the defense aspect. So yeah, a different part.
+
+[00:01:03] **Audrow Nash:** No.
+
+[00:01:04] **Jenny Read:** Not exactly. Defense, the military is actually the one area that Aria won't fund. So that's an important change. And that has that is consequences as well. So, you know, Darfur has a sort of built in customer in the form of the Department of Defense or it doesn't. So we have to think hard about how are we going to take the science and tech that we deliver or develop and translate that into societal impact.
+
+[00:01:30] **Audrow Nash:** And so yeah it's about tech transfer basically. So you're funding research so that it can you can build companies out of it and it can improve the ciety in general.
+
+[00:01:40] **Jenny Read:** That's right. So it's an interesting mix because we are not translational in the sense of being super high TRL or close to commercialization. We can fund very low tier or sorry technology residence level meetings.
+
+[00:01:54] **Audrow Nash:** I would never know that acronym. Okay. Yeah.
+
+[00:01:57] **Jenny Read:** Yeah I think we we fund work. That's very basic and speculative. But importantly, we always have a sense of how we're hoping it's going to deliver benefit for society. So we wouldn't fund or we haven't typically funded work that sort of blue sky in the sense we have no idea how this might benefit. Well, we have a purpose in mind. And then we're trying to get the knowledge and the technology together that we need to solve the problem we're focusing on. And we have at that moment seven programs, and each program is focusing on a different problem area, will challenge that we're aiming to solve.
+`;
+
 describe("makeMarkdownTranscriptFromStrings", () => {
-  it("should parse the outline", () => {
-    // expect(makeMarkdownTranscriptFromStrings(TRANSCRIPT_STRING, OUTLINE_STRING)).toEqual(EXPECTED_MARKDOWN);
+  it("should make a markdown transcript from a transcript and outline", () => {
+    expect(
+      makeMarkdownTranscriptFromStrings(TRANSCRIPT_STRING, OUTLINE_STRING)
+    ).toEqual(EXPECTED_MARKDOWN_WITH_OUTLINE);
+  });
+
+  it("should make a markdown transcript from a transcript", () => {
+    expect(makeMarkdownTranscriptFromStrings(TRANSCRIPT_STRING)).toEqual(
+      EXPECTED_MARKDOWN_WITHOUT_OUTLINE
+    );
   });
 });
