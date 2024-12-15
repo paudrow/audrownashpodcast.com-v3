@@ -47,10 +47,14 @@ export default function Home() {
       // Validate the uploaded CSV
       fromCsv(text);
       setTranscriptError("");
+      // Reset the file input value
+      event.target.value = "";
     } catch (error) {
       setTranscriptError(
         error instanceof Error ? error.message : "Invalid file format"
       );
+      // Also reset the file input on error
+      event.target.value = "";
     }
   };
 
