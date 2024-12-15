@@ -8,9 +8,9 @@
     "test:watch": "jest --watch"
   },
   "exports": {
-    "./parse": {
-      "types": "./src/parse.ts",
-      "default": "./dist/parse.js"
+    "./make-transcript": {
+      "types": "./src/make-transcript.ts",
+      "default": "./dist/make-transcript.js"
     }
   },
   "dependencies": {

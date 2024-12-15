@@ -86,4 +86,9 @@ describe("parseOutline", () => {
     const input = "00:99:00 Invalid time";
     expect(() => parse(input)).toThrow();
   });
+
+  it("should add a start entry if it is missing", () => {
+    const outlineWithoutStart = OUTLINE_DATA.split("\n").slice(1).join("\n");
+    expect(parse(outlineWithoutStart)).toEqual(EXPECTED_OUTLINE);
+  });
 });
