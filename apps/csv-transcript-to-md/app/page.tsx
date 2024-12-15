@@ -4,6 +4,7 @@ import { makeMarkdownTranscriptFromStrings } from "@repo/markdown-tools/make-tra
 import { parse as parseOutline } from "@repo/outline-tools/parse";
 import { fromCsv } from "@repo/transcript-tools/from-csv";
 import { useState } from "react";
+import ThemeToggle from "./components/ThemeToggle";
 
 const EXAMPLE_TRANSCRIPT = `"Speaker Name","Start Time","End Time","Text"
 "Audrow Nash","00;00;00;03","00;00;02;06","Hi, Jenny. Would you introduce yourself?"
@@ -155,9 +156,24 @@ export default function Home() {
   return (
     <div className="min-h-screen p-8">
       <main className="mx-auto max-w-4xl space-y-6">
-        <h1 className="text-2xl font-bold">
-          CSV Transcript to Markdown Converter
-        </h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold">
+            CSV Transcript to Markdown Converter
+          </h1>
+          <ThemeToggle />
+        </div>
+        <p className="text-foreground/70 text-sm">
+          Made by Audrow for the{" "}
+          <a
+            href="https://audrownashpodcast.com/"
+            className="hover:text-foreground underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Audrow Nash Podcast
+          </a>
+          . Feel free to use it if it&apos;s helpful to you!
+        </p>
         <div className="space-y-4">
           <div>
             <div className="mb-2 flex items-center justify-between">
