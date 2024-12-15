@@ -131,6 +131,19 @@ export default function Home() {
     }
   };
 
+  const handleDownload = () => {
+    const blob = new Blob([outputText], { type: "text/markdown" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "transcript.md";
+
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+  };
+
   const clearAll = () => {
     setTranscriptText("");
     setOutlineText("");
@@ -230,20 +243,32 @@ export default function Home() {
             />
           </div>
 
-          <div className="flex gap-4">
-            <button
-              onClick={handleConvert}
-              disabled={!!transcriptError || !!outlineError}
-              className="bg-foreground text-background rounded-lg px-4 py-2 transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              Convert to Markdown
-            </button>
+          <div className="flex justify-end gap-4">
             <button
               onClick={clearAll}
-              className="border-foreground/20 hover:border-foreground/40 rounded-lg border px-4 py-2 transition-colors"
+              className="border-foreground/20 hover:border-foreground/40 rounded-lg border px-4 py-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+              disabled={!transcriptText && !outlineText && !outputText}
             >
               Clear All
             </button>
+            <div className="flex gap-2">
+              <button
+                onClick={handleConvert}
+                disabled={
+                  !!transcriptError || !!outlineError || !transcriptText
+                }
+                className="bg-foreground text-background rounded-lg px-4 py-2 transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                Convert to Markdown
+              </button>
+              <button
+                onClick={handleDownload}
+                disabled={!outputText}
+                className="bg-foreground text-background rounded-lg px-4 py-2 transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                Download Markdown
+              </button>
+            </div>
           </div>
 
           <div>
