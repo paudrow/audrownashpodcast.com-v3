@@ -194,6 +194,29 @@ describe("fromCsv", () => {
     });
   });
 
+  it("should parse the transcript with leading and trailing whitespace", () => {
+    const input = `  \n\n${CSV_DATA}\n \n\n  `;
+    expect(fromCsv(input, true)).toEqual({
+      rows: EXPECTED_ROWS_WITH_REDUCTION,
+    });
+  });
+
+  it("should skip a line if it has no text", () => {
+    const input = `"Speaker Name","Start Time","End Time","Text"
+"Audrow Nash","00;00;00;03","00;00;02;06",""
+"Jenny Read","00;00;02;09","00;00;09;17","Absolutely. I'm Jenny Read. I'm a program director at Aria, the UK's advanced research and invention agency."`;
+    expect(fromCsv(input, true)).toEqual({
+      rows: [
+        {
+          speaker: "Jenny Read",
+          startTime: createTime(0, 0, 2),
+          endTime: createTime(0, 0, 9),
+          text: "Absolutely. I'm Jenny Read. I'm a program director at Aria, the UK's advanced research and invention agency.",
+        },
+      ],
+    });
+  });
+
   it("should handle empty string", () => {
     expect(() => fromCsv("")).toThrow();
   });
@@ -212,14 +235,35 @@ describe("fromCsv", () => {
     expect(() => fromCsv(noEndTime)).toThrow();
   });
 
-  it("should throw if a line is empty", () => {
-    const emptyLine = `"Speaker Name","Start Time","End Time","Text"
-"Audrow Nash","00;00;00;03","00;00;02;06",""
+  it("should throw if the header is invalid", () => {
+    const invalidHeader = `"Speaker Name","End Time","Start Time","Text"
+"Audrow Nash","00;00;00;03","00;00;02;06","Hi, Jenny. Would you introduce yourself?"
+"Jenny Read","00;00;02;09","00;00;09;17","Absolutely. I'm Jenny Read. I'm a program director at Aria, the UK's advanced research and invention agency."`;
+    expect(() => fromCsv(invalidHeader)).toThrow();
+  });
+
+  it("should throw with the wrong number of columns", () => {
+    const invalidColumns = `"Speaker Name","Start Time","End Time","Text"
+"Audrow Nash","00;00;00;03","00;00;02;06"
 "Jenny Read","00;00;02;09","00;00;09;17","Absolutely. I'm Jenny Read. I'm a program director at Aria, the UK's advanced research and invention agency."
 "Audrow Nash","00;00;09;19","00;00;12;08","And. Tell me about Aria."
 "Jenny Read","00;00;12;11","00;00;38;26","Yeah. Oh, yeah. Is quite a new funding organization in the UK. We were founded by that to Parliament in January 2023, and our mission is to produce transformative societal benefit to science and technology. So we're we're kind of new an experiment basically in a new way of funding for the UK. We're loosely modeled on the RPO and DAF, a model US that is widely perceived as having been very successful."
 "Jenny Read","00;00;38;28","00;00;50;13","And we haven't really had that kind of program driven, mission focused approach to funding in the UK before. And that's what Aria is trying to do. But to kick off."`;
-    expect(() => fromCsv(emptyLine)).toThrow();
+    expect(() => fromCsv(invalidColumns)).toThrow();
+  });
+
+  it("should throw if a start time is empty", () => {
+    const emptyStartTime = `"Speaker Name","Start Time","End Time","Text"
+"Audrow Nash","","00;00;02;06","Hi, Jenny. Would you introduce yourself?"
+"Jenny Read","00;00;02;09","00;00;09;17","Absolutely. I'm Jenny Read. I'm a program director at Aria, the UK's advanced research and invention agency."`;
+    expect(() => fromCsv(emptyStartTime)).toThrow();
+  });
+
+  it("should throw if an end time is empty", () => {
+    const emptyEndTime = `"Speaker Name","Start Time","End Time","Text"
+"Audrow Nash","00;00;00;03","","Hi, Jenny. Would you introduce yourself?"
+"Jenny Read","00;00;02;09","00;00;09;17","Absolutely. I'm Jenny Read. I'm a program director at Aria, the UK's advanced research and invention agency."`;
+    expect(() => fromCsv(emptyEndTime)).toThrow();
   });
 
   it("should throw if a start time is an invalid format", () => {

@@ -104,6 +104,14 @@ export default function Home() {
     }
   };
 
+  const clearAll = () => {
+    setTranscriptText("");
+    setOutlineText("");
+    setOutputText("");
+    setTranscriptError("");
+    setOutlineError("");
+  };
+
   return (
     <div className="min-h-screen p-8">
       <main className="mx-auto max-w-4xl space-y-6">
@@ -180,13 +188,21 @@ export default function Home() {
             />
           </div>
 
-          <button
-            onClick={handleConvert}
-            disabled={!!transcriptError || !!outlineError}
-            className="bg-foreground text-background rounded-lg px-4 py-2 transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            Convert to Markdown
-          </button>
+          <div className="flex gap-4">
+            <button
+              onClick={handleConvert}
+              disabled={!!transcriptError || !!outlineError}
+              className="bg-foreground text-background rounded-lg px-4 py-2 transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Convert to Markdown
+            </button>
+            <button
+              onClick={clearAll}
+              className="border-foreground/20 hover:border-foreground/40 rounded-lg border px-4 py-2 transition-colors"
+            >
+              Clear All
+            </button>
+          </div>
 
           <div>
             <label htmlFor="output" className="mb-2 block font-medium">

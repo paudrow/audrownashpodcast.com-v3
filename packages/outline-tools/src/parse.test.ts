@@ -67,6 +67,11 @@ describe("parseOutline", () => {
     expect(parse(input)).toEqual(EXPECTED_OUTLINE);
   });
 
+  it("should parse the outline with leading and trailing whitespace", () => {
+    const input = ` \n \n ${OUTLINE_DATA} \n\n `;
+    expect(parse(input)).toEqual(EXPECTED_OUTLINE);
+  });
+
   it("should throw an error if the outline is empty", () => {
     const input = "";
     expect(() => parse(input)).toThrow();

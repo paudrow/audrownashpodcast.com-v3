@@ -5,7 +5,7 @@ import { compare } from "@repo/time-tools/compare";
 
 export function parse(text: string): Outline {
   // Split into lines
-  const lines = text.split("\n");
+  const lines = text.trim().split("\n");
   if (lines.length === 0 || (lines.length === 1 && lines[0] === "")) {
     throw new Error("Invalid outline: no data");
   }

@@ -9,6 +9,11 @@ export function fromCsv(csv: string, reduceRows: boolean = true): Transcript {
     throw new Error("Invalid CSV: no data");
   }
 
+  const header = lines[0]?.trim();
+  const expectedHeader = '"Speaker Name","Start Time","End Time","Text"';
+  if (header !== expectedHeader) {
+    throw new Error(`Invalid CSV header: expected "${expectedHeader}" but got "${header}"`);
+  }
   const dataLines = lines.slice(1);
 
   const rows: TranscriptRow[] = dataLines
