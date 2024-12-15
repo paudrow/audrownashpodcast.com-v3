@@ -35,6 +35,25 @@ export default function Home() {
   const [transcriptError, setTranscriptError] = useState<string>("");
   const [outlineError, setOutlineError] = useState<string>("");
 
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      setTranscriptText(text);
+      // Validate the uploaded CSV
+      fromCsv(text);
+      setTranscriptError("");
+    } catch (error) {
+      setTranscriptError(
+        error instanceof Error ? error.message : "Invalid file format"
+      );
+    }
+  };
+
   const handleTranscriptChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -97,15 +116,30 @@ export default function Home() {
               <label htmlFor="transcript" className="block font-medium">
                 Transcript CSV
               </label>
-              <button
-                onClick={() => {
-                  setTranscriptText(EXAMPLE_TRANSCRIPT);
-                  setTranscriptError("");
-                }}
-                className="text-foreground/70 hover:text-foreground text-sm"
-              >
-                Load Example
-              </button>
+              <div className="flex items-center gap-4">
+                <input
+                  type="file"
+                  accept=".csv"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                  id="file-upload"
+                />
+                <label
+                  htmlFor="file-upload"
+                  className="text-foreground/70 hover:text-foreground cursor-pointer text-sm"
+                >
+                  Upload CSV
+                </label>
+                <button
+                  onClick={() => {
+                    setTranscriptText(EXAMPLE_TRANSCRIPT);
+                    setTranscriptError("");
+                  }}
+                  className="text-foreground/70 hover:text-foreground text-sm"
+                >
+                  Load Example
+                </button>
+              </div>
             </div>
             {transcriptError && (
               <div className="mb-2 text-sm text-red-500">{transcriptError}</div>
