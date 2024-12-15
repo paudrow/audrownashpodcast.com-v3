@@ -3,18 +3,24 @@ import { Time } from "./types.js";
 export function fromString(time: string, delimiter: string = ":"): Time {
   const components = time.split(delimiter).map(Number);
   if (components.length !== 3) {
-    throw new Error(`Time must be in format "${delimiter}HH${delimiter}MM${delimiter}SS": ${time}`);
+    throw new Error(
+      `Time must be in format "${delimiter}HH${delimiter}MM${delimiter}SS": ${time}`
+    );
   }
   const [hours, minutes, seconds] = components;
   if (hours === undefined || minutes === undefined || seconds === undefined) {
-    throw new Error(`Time must be in format "${delimiter}HH${delimiter}MM${delimiter}SS": ${time}`);
+    throw new Error(
+      `Time must be in format "${delimiter}HH${delimiter}MM${delimiter}SS": ${time}`
+    );
   }
   return create(hours, minutes, seconds);
 }
 
 export function create(hours: number, minutes: number, seconds: number): Time {
   if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
-    throw new Error(`Time components must be valid numbers: ${hours}, ${minutes}, ${seconds}`);
+    throw new Error(
+      `Time components must be valid numbers: ${hours}, ${minutes}, ${seconds}`
+    );
   }
   if (hours < 0) {
     throw new Error(`Hours cannot be negative: ${hours}`);

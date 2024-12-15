@@ -9,4 +9,3 @@ export function compare(a: Time, b: Time): number {
   }
   return a.seconds - b.seconds;
 }
-

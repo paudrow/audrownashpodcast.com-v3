@@ -45,5 +45,4 @@ describe("compare", () => {
       expect(compare(lessThan, greaterThan)).toBe(-1);
     });
   });
-
 });
