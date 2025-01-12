@@ -6,7 +6,7 @@ import { fromCsv } from "@repo/transcript-tools/from-csv";
 import { useState } from "react";
 import ThemeToggle from "./components/ThemeToggle";
 
-const EXAMPLE_TRANSCRIPT = `"Speaker Name","Start Time","End Time","Text"
+export const EXAMPLE_TRANSCRIPT = `"Speaker Name","Start Time","End Time","Text"
 "Audrow Nash","00;00;00;03","00;00;02;06","Hi, Jenny. Would you introduce yourself?"
 "Jenny Read","00;00;02;09","00;00;09;17","Absolutely. I'm Jenny Read. I'm a program director at Aria, the UK's advanced research and invention agency."
 "Audrow Nash","00;00;09;19","00;00;12;08","And. Tell me about Aria."
@@ -22,7 +22,7 @@ const EXAMPLE_TRANSCRIPT = `"Speaker Name","Start Time","End Time","Text"
 "Jenny Read","00;01;57;22","00;02;19;10","Yeah I think we we fund work. That's very basic and speculative. But importantly, we always have a sense of how we're hoping it's going to deliver benefit for society. So we wouldn't fund or we haven't typically funded work that sort of blue sky in the sense we have no idea how this might benefit. Well, we have a purpose in mind."
 "Jenny Read","00;02;19;14","00;02;34;06","And then we're trying to get the knowledge and the technology together that we need to solve the problem we're focusing on. And we have at that moment seven programs, and each program is focusing on a different problem area, will challenge that we're aiming to solve."`;
 
-const EXAMPLE_OUTLINE = `00:00:00 Introduction and Background
+export const EXAMPLE_OUTLINE = `00:00:00 Introduction and Background
 00:00:09 ARIA
 00:01:05 Not DARPA
 00:01:30 Tech Transfer
