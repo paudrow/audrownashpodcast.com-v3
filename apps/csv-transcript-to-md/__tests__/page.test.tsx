@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Page from "../app/page";
-import { EXAMPLE_TRANSCRIPT, EXAMPLE_OUTLINE } from "../app/page";
+import { EXAMPLE_TRANSCRIPT, EXAMPLE_OUTLINE } from "../app/constants";
 
 beforeAll(() => {
   Object.defineProperty(window, "matchMedia", {
