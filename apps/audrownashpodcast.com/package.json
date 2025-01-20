@@ -8,14 +8,19 @@
     "start": "next start",
     "lint": "next lint",
     "predev": "npm run typegen",
-  "prebuild": "npm run typegen",
-  "typegen": "sanity schema extract --path=./src/sanity/extract.json && sanity typegen generate"
+    "prebuild": "npm run typegen",
+    "typegen": "sanity schema extract --path=./src/sanity/extract.json && sanity typegen generate"
   },
   "dependencies": {
+    "@sanity/icons": "^3.5.7",
+    "@sanity/image-url": "^1.1.0",
+    "@sanity/vision": "^3.70.0",
     "next": "15.1.5",
     "next-sanity": "^9.8.39",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "sanity": "^3.70.0",
+    "styled-components": "^6.1.14"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

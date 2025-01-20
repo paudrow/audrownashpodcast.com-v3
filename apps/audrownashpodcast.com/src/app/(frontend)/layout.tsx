@@ -1,14 +1,13 @@
-import { SanityLive } from '@/sanity/lib/live'
+import "@/app/globals.css";
 
-export default function FrontendLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <>
-      {children}
-      <SanityLive />
-    </>
-  )
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
 }
