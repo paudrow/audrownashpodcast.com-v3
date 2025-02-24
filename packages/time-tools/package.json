@@ -28,6 +28,6 @@
   "devDependencies": {
     "@repo/jest-config": "*",
     "@repo/typescript-config": "*",
-    "typescript": "^5.3.0"
+    "typescript": "^5.7.3"
   }
 }
